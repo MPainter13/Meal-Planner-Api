@@ -15,7 +15,7 @@ usersRouter
           error: `Missing '${field}' in request body`
         })
 
-    // TODO: check username doesn't start with spaces
+  
 
     const passwordError = UsersService.validatePassword(password)
 
@@ -28,8 +28,8 @@ usersRouter
     )
       .then(hasUserWithUserName => {
         if (hasUserWithUserName)
-          return res.status(400).json({ error: `Username already taken` })
-
+          return res.status(400).json({ error: `User name already taken` })
+ 
         return UsersService.hashPassword(password)
           .then(hashedPassword => {
             const newUser = {

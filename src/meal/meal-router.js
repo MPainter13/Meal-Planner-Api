@@ -77,7 +77,7 @@ mealsRouter
       })
       .catch(next);
   })
-  .patch((req, res, next) => {
+  .patch(jsonParser, (req, res, next) => {
     const { title, description, link, day, kind_of_meal } = req.body;
     const mealToEdit = { title, description, link, day, kind_of_meal };
     MealsService.updateMeal(

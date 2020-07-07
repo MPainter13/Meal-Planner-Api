@@ -38,13 +38,10 @@ const UsersService = {
   serializeUser(user) {
     return {
       id: user.id,
-      //full_name: xss(user.full_name),
       username: xss(user.username),
       email: xss(user.email),
-    //   nickname: xss(user.nick_name),
-    //   date_created: new Date(user.date_created),
     }
   },
 }
 
-module.exports = UsersService
+module.exports = UsersService;
