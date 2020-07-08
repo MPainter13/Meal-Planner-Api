@@ -28,7 +28,7 @@ function makeMealArray(users) {
   return [
     {
       id: 1,
-      users_id: users[0].id,
+      users_id: 1,
       title: 'chicken',
       description: 'chicken with Alfredo sos',
       link_url: 'https://www.google.com/search?q=chicken+with+broccoli&rlz=1C1CHBD_enUS888US888&oq=chick&aqs=chrome.1.69i57j69i59j46j0l4j46.3876j0j7&sourceid=chrome&ie=UTF-8',
@@ -37,7 +37,7 @@ function makeMealArray(users) {
     },
     {
       id: 2,
-      users_id: users[1].id,
+      users_id: 2,
       title: 'smoothie',
       description: 'diffrent fruits',
       link_url: 'https://www.foodnetwork.com/recipes/food-network-kitchen/frozen-fruit-smoothies-recipe-1914927',
@@ -46,7 +46,7 @@ function makeMealArray(users) {
     },
     {
       id: 3,
-      users_id: users[2].id,
+      users_id: 3,
       title: 'chips',
       description: '',
       link_url: 'https://www.allrecipes.com/recipe/73135/homestyle-potato-chips/',
@@ -124,8 +124,6 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
 module.exports = {
   makeUsersArray,
   makeMealArray,
- 
-
   makeMealFixtures,
   cleanTables,
   seedUsers,

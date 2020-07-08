@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 
 
-describe.only('Auth Endpoints', function () {
+describe('Auth Endpoints', function () {
   let db
 
   const { testUsers } = helpers.makeMealFixtures();
@@ -26,7 +26,7 @@ describe.only('Auth Endpoints', function () {
 
   afterEach('cleanup', () => helpers.cleanTables(db));
 
-  describe(`POST /auth/login`, () => {
+  describe('POST /auth/login', () => {
     beforeEach('insert users', () =>
       helpers.seedUsers(
         db,
@@ -51,17 +51,18 @@ describe.only('Auth Endpoints', function () {
           .send(loginAttemptBody)
           .expect(400, {
             error: `Missing ${field} in request body`
-          })
-      })
-    })
+          });
+      });
+    });
 
     it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
       const userValidCreds = {
         username: testUser.username,
-        password: 'password1',
+        password: testUser.password,
       }
       return supertest(app)
         .post('/auth/login')
+
         .send(userValidCreds)
         .then(response => {
 
@@ -74,5 +75,6 @@ describe.only('Auth Endpoints', function () {
           throw err;
         });
     });
+
   });
 });
