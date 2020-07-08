@@ -17,6 +17,8 @@ const morganOption = (NODE_ENV === 'production')
 app.use(morgan(morganOption));
 app.use(cors());
 app.use(helmet());
+
+//Routers
 app.use('/meals', mealsRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
@@ -30,7 +32,6 @@ app.use(function errorHandler(error, req, res, next) {
   if (NODE_ENV === 'production') {
     response = { error: { message: 'server error' } };
   } else {
-    console.error(error);
     response = { message: error.message, error };
   }
   res.status(500).json(response);

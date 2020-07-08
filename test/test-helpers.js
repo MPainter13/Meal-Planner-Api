@@ -56,45 +56,6 @@ function makeMealArray(users) {
   ];
 }
 
-function makeExpectedMeal(users, meal) {
-  const author = users
-    .find(user => user.id === meal.author_id)
-
-  return {
-    id: meal.id,
-    title: meal.title,
-    description: meal.description,
-    link: meal.link,
-    day: meal.day,
-    kind_of_meal: meal.kind_of_meal,
-    author: {
-      id: author.id,
-      username: author.id,
-      email: author.email,
-    }
-  };
-}
-
-function makeMaliciousMeal(user) {
-  const maliciousMeal = {
-    id: 811,
-    users_id: user.id,
-    title: 'Bad apple',
-    description: 'hello, hello',
-    link_url: 'https://sessions.thinkful.com/Magdalena',
-    day: 'Monday',
-    kind_of_meal: 'Lunch'
-  }
-  const expectedMeal = {
-    ...makeExpectedMeal([user], maliciousMeal),
-    title: 'Apple',
-    link_url: 'https://www.simplyrecipes.com/recipes/baked_apples/'
-  }
-  return {
-    maliciousMeal,
-    expectedMeal,
-  }
-}
 
 function makeMealFixtures() {
   const testUsers = makeUsersArray()
@@ -126,7 +87,7 @@ function seedUsers(db, users) {
     ...user,
     password: bcrypt.hashSync(user.password, 1)
   }))
-  return db.info('users').insert(preppedUsers)
+  return db.into('users').insert(preppedUsers)
     .then(() =>
       db.raw(
         `SELECT setval('users_id_seq', ?)`,
@@ -137,8 +98,11 @@ function seedUsers(db, users) {
 
 function seedMealTables(db, users, meal) {
   return db.transaction(async trx => {
+
     await seedUsers(trx, users)
+
     await trx.into('meal').insert(meal)
+
     await trx.raw(
       `SELECT setval('meal_id_seq', ?)`,
       [meal[meal.length - 1].id],
@@ -147,17 +111,9 @@ function seedMealTables(db, users, meal) {
   )
 }
 
-function seedMaliciousTables(db, user, meal) {
-  return seedUsers(db, [user])
-  .then(() =>
-  db.info('meal')
-  .insert([meal])
-  )
-}
-
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   const token = jwt.sign({ users_id: user.id }, secret, {
-    subject: user.user_name,
+    subject: user.username,
     algorithm: 'HS256',
   })
   return `Bearer ${token}`
@@ -168,13 +124,11 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
 module.exports = {
   makeUsersArray,
   makeMealArray,
-  makeExpectedMeal,
-  makeMaliciousMeal,
+ 
 
   makeMealFixtures,
   cleanTables,
   seedUsers,
   seedMealTables,
-  seedMaliciousTables,
   makeAuthHeader,
 }

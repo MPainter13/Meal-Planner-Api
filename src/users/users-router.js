@@ -2,12 +2,12 @@ const express = require('express')
 const path = require('path')
 const UsersService = require('./users-service')
 
-const usersRouter = express.Router()
-const jsonBodyParser = express.json()
+const usersRouter = express.Router();
+const jsonBodyParser = express.json();
 
 usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {
-    const { password, username, email } = req.body
+    const { password, username, email } = req.body;
 
     for (const field of ['username', 'email', 'password'])
       if (!req.body[field])

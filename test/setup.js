@@ -1,6 +1,11 @@
-require ('dotenv').config();
-const { expect } = require('chai');
-const supertest = require('supertest');
+process.env.NODE_ENV = 'test';
 
-global.expect = expect;
+require('dotenv').config();
+
+process.env.TEST_DB_URL = process.env.TEST_DB_URL || 'postgresql://postgres@localhost/meal-planner-test';
+
+const supertest = require('supertest');
+const { expect } = require('chai');
+
 global.supertest = supertest;
+global.expect = expect;
