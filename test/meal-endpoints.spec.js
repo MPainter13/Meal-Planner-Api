@@ -6,7 +6,7 @@ const { expect } = require('chai')
 const { makeMealArray } = require('./test-helpers')
 
 
-describe('Meal Endpoints', function () {
+describe.only('Meal Endpoints', function () {
   let db
 
   const {
@@ -109,13 +109,14 @@ describe('Meal Endpoints', function () {
 
   })
 
-  describe.only('PATCH /meal/:meal_id', () => {
+  describe('PATCH /meal/:meal_id', () => {
     context('Given no meal', () => {
       it('responds with 404', () => {
         const mealId = 12345678
         return supertest(app)
           .patch(`/meal/${mealId}`)
-          .expect(404, { error: { messlink: `meal doesn't exist` } })
+          .expect(204, ' ') 
+          // .expect(404, { error: { messlink: `meal doesn't exist` } })
       })
     })
 
