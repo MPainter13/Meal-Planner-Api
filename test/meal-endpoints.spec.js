@@ -11,7 +11,7 @@ describe.only('Meal Endpoints', function () {
 
   const {
     testUsers,
-    testMeal
+    testMeals
   } = helpers.makeMealFixtures()
 
   before('make knex instance', () => {
@@ -34,12 +34,12 @@ describe.only('Meal Endpoints', function () {
         return helpers.seedMealTables(
           db,
           testUsers,
-          testMeal
+          testMeals
         )
       })
 
       it('should respond with 200 and the meal', () => {
-        const expectedMeal = testMeal[0]
+        const expectedMeal = testMeals[0]
         //Change Route => add .auth()
         return supertest(app)
           .get('/Meal/1')
@@ -121,13 +121,13 @@ describe.only('Meal Endpoints', function () {
     })
 
     context('Given meal in DB', () => {
-      const testMeal = makeMealArray()
+      const testMeals = makeMealArray()
 
       beforeEach('insert meal', () => {
         return helpers.seedMealTables(
           db,
           testUsers,
-          testMeal
+          testMeals
         )
       })
 
@@ -141,7 +141,7 @@ describe.only('Meal Endpoints', function () {
           day: 'Updated day',
         }
         const expectedMeal = {
-          ...testMeal[idToUpdate - 1],
+          ...testMeals[idToUpdate - 1],
           ...updateMeal
         }
 
