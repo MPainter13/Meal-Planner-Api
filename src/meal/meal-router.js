@@ -33,7 +33,7 @@ mealsRouter
       .then(meal => {
         res
           .status(201)
-          .location('/meals/${meal.id}')
+          .location(`/meals/${meal.id}`)
           .json(meal);
       });
   });
@@ -48,7 +48,7 @@ mealsRouter
       .then(meal => {
         if (!meal) {
           return res.status(404).json({
-            error: { message: 'Meal does not exist' }
+            error: 'meal not found' 
           })
         }
         res.meal = meal;
@@ -63,7 +63,8 @@ mealsRouter
       description: res.meal.description,
       link: res.meal.link,
       day: res.meal.day,
-      kind_of_meal: res.meal.kind_of_meal
+      kind_of_meal: res.meal.kind_of_meal,
+      users_id: res.meal.users_id
     });
   })
   .delete((req, res, next) => {

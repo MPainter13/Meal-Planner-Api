@@ -6,7 +6,7 @@ const { expect } = require('chai')
 const { makeMealArray } = require('./test-helpers')
 
 
-describe.only('Meal Endpoints', function () {
+describe('Meal Endpoints', function () {
   let db
 
   const {
@@ -28,7 +28,7 @@ describe.only('Meal Endpoints', function () {
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  describe('GET /meal/:meal_id', () => {
+  describe('GET /meals/:meal_id', () => {
     context('given meal exists', () => {
       beforeEach('insert meal', () => {
         return helpers.seedMealTables(
@@ -40,27 +40,35 @@ describe.only('Meal Endpoints', function () {
 
       it('should respond with 200 and the meal', () => {
         const expectedMeal = testMeals[0]
-        //Change Route => add .auth()
         return supertest(app)
-          .get('/Meal/1')
+          .get('/meals/1')
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
           .expect(200, expectedMeal)
       })
     })
 
     context(`given the meal doesn't exist`, () => {
+      beforeEach('insert users', () => {
+        return helpers.seedUsers(
+          db,
+          testUsers
+        )
+      })
+      
       it(`should resond with 404 'meal not found'`, () => {
         return supertest(app)
-          .get('/meal/4')
+          .get('/meals/4')
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
           .expect(404, { error: 'meal not found' })
       })
     })
   })
 
-  describe('POST /meal', () => {
+  describe('POST /meals', () => {
     beforeEach('insert users', () => {
       return helpers.seedUsers(
         db,
-        testUsers,
+        testUsers
       )
     })
 
@@ -76,8 +84,8 @@ describe.only('Meal Endpoints', function () {
         user_id: testUser.id
       }
       return supertest(app)
-        .post('/meal')
-        // .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+        .post('/meals')
+        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
         .send(newMeal)
         .expect(201)
         .expect(res => {
@@ -87,7 +95,7 @@ describe.only('Meal Endpoints', function () {
           expect(res.body.link).to.eql(newMeal.link)
           expect(res.body.day).to.eql(newMeal.day)
           expect(res.body.kind_of_meal).to.eql(newMeal.kind_of_meal)
-          expect(res.headers.location).to.eql(`/users/1/meal/${res.body.id}`)
+          expect(res.headers.location).to.eql(`/meals/${res.body.id}`)
         })
         .expect(res => {
           db
@@ -109,14 +117,21 @@ describe.only('Meal Endpoints', function () {
 
   })
 
-  describe('PATCH /meal/:meal_id', () => {
+  describe('PATCH /meals/:meal_id', () => {
     context('Given no meal', () => {
+      beforeEach('insert users', () => {
+        return helpers.seedUsers(
+          db,
+          testUsers
+        )
+      })
+
       it('responds with 404', () => {
         const mealId = 12345678
         return supertest(app)
-          .patch(`/meal/${mealId}`)
-          .expect(204, ' ') 
-          // .expect(404, { error: { messlink: `meal doesn't exist` } })
+          .patch(`/meals/${mealId}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .expect(404, { error: 'meal not found' })
       })
     })
 
@@ -146,12 +161,14 @@ describe.only('Meal Endpoints', function () {
         }
 
         return supertest(app)
-          .patch(`/meal/${idToUpdate}`)
+          .patch(`/meals/${idToUpdate}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
           .send(updateMeal)
           .expect(204)
           .then(res =>
             supertest(app)
-              .get(`/meal/${idToUpdate}`)
+              .get(`/meals/${idToUpdate}`)
+              .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
               .expect(expectedMeal)
           )
       })

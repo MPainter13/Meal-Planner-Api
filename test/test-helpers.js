@@ -31,16 +31,16 @@ function makeMealArray(users) {
       users_id: 1,
       title: 'chicken',
       description: 'chicken with Alfredo sos',
-      link_url: 'https://www.google.com/search?q=chicken+with+broccoli&rlz=1C1CHBD_enUS888US888&oq=chick&aqs=chrome.1.69i57j69i59j46j0l4j46.3876j0j7&sourceid=chrome&ie=UTF-8',
+      link: 'https://www.google.com/search?q=chicken+with+broccoli&rlz=1C1CHBD_enUS888US888&oq=chick&aqs=chrome.1.69i57j69i59j46j0l4j46.3876j0j7&sourceid=chrome&ie=UTF-8',
       day: 'Monday',
-      kind_of_meal: 'Dinner'
+      kind_of_meal: 'Dinner',
     },
     {
       id: 2,
       users_id: 2,
       title: 'smoothie',
       description: 'diffrent fruits',
-      link_url: 'https://www.foodnetwork.com/recipes/food-network-kitchen/frozen-fruit-smoothies-recipe-1914927',
+      link: 'https://www.foodnetwork.com/recipes/food-network-kitchen/frozen-fruit-smoothies-recipe-1914927',
       day: 'Sunday',
       kind_of_meal: 'Breakfats'
     },
@@ -49,7 +49,7 @@ function makeMealArray(users) {
       users_id: 3,
       title: 'chips',
       description: '',
-      link_url: 'https://www.allrecipes.com/recipe/73135/homestyle-potato-chips/',
+      link: 'https://www.allrecipes.com/recipe/73135/homestyle-potato-chips/',
       day: 'Saturday',
       kind_of_meal: 'Afternoon snack'
     }
