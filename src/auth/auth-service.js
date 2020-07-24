@@ -6,7 +6,7 @@ const AuthService = {
   getUserWithUserName(db, username) {
     return db('users')
       .where({ username })
-      .first()
+      .first();
   },
   comparePasswords(password, hash) {
     return bcrypt.compare(password, hash);
@@ -29,6 +29,6 @@ const AuthService = {
       .toString()
       .split(':');
   },
-}
+};
 
 module.exports = AuthService;

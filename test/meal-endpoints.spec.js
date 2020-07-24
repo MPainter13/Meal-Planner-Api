@@ -17,7 +17,7 @@ describe('Meal Endpoints', function () {
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DATABASE_URL,
+      connection: process.env.TEST_DB_URL,
     })
     app.set('db', db)
   })
@@ -99,7 +99,7 @@ describe('Meal Endpoints', function () {
         })
         .expect(res => {
           db
-            .from('Meal')
+            .from('meal')
             .select('*')
             .where({ id: res.body.id })
             .first()
@@ -113,8 +113,6 @@ describe('Meal Endpoints', function () {
             })
         })
     })
-
-
   })
 
   describe('PATCH /meals/:meal_id', () => {
@@ -172,9 +170,6 @@ describe('Meal Endpoints', function () {
               .expect(expectedMeal)
           )
       })
-
     })
-
   })
-
 })

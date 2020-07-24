@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 
 describe('Auth Endpoints', function () {
-  let db
+  let db;
 
   const { testUsers } = helpers.makeMealFixtures();
   const testUser = testUsers[0];
@@ -15,10 +15,10 @@ describe('Auth Endpoints', function () {
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DATABASE_URL
-    })
-    app.set('db', db)
-  })
+      connection: process.env.TEST_DB_URL
+    });
+    app.set('db', db);
+  });
 
   after('disconnect from db', () => db.destroy());
 
@@ -32,7 +32,7 @@ describe('Auth Endpoints', function () {
         db,
         testUsers
       )
-    )
+    );
 
     const requiredFields = ['username', 'password'];
 
@@ -40,7 +40,7 @@ describe('Auth Endpoints', function () {
       const loginAttemptBody = {
         username: testUser.username,
         password: testUser.password
-      }
+      };
 
       it(`responds with 400 required error when ${field} is missing`, () => {
 
@@ -55,14 +55,13 @@ describe('Auth Endpoints', function () {
       });
     });
 
-    it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
+    it('responds 200 and JWT auth token using secret when valid credentials', () => {
       const userValidCreds = {
         username: testUser.username,
         password: testUser.password,
-      }
+      };
       return supertest(app)
         .post('/auth/login')
-
         .send(userValidCreds)
         .then(response => {
 
@@ -75,6 +74,5 @@ describe('Auth Endpoints', function () {
           throw err;
         });
     });
-
   });
 });

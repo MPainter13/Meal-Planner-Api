@@ -17,11 +17,11 @@ mealsRouter
       })
       .catch(next);
   })
-  .post(jsonParser, (req, res, next) => {
+  .post(jsonParser, (req, res) => {
     const { title, description, link, day, kind_of_meal } = req.body;
     const newMeal = { title, description, link, day, kind_of_meal, users_id: req.user.id };
     for (const [key, value] of Object.entries(newMeal)) {
-      if (value == null) {
+      if (value === null) {
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` }
         });
@@ -49,14 +49,14 @@ mealsRouter
         if (!meal) {
           return res.status(404).json({
             error: 'meal not found' 
-          })
+          });
         }
         res.meal = meal;
         next();
       })
       .catch(next);
   })
-  .get((req, res, next) => {
+  .get((req, res) => {
     res.json({
       id: res.meal.id,
       title: res.meal.title,

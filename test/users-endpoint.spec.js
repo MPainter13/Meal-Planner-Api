@@ -6,7 +6,7 @@ const { expect } = require('chai');
 const bcrypt = require('bcryptjs');
 
 describe('User Endpoints', function () {
-  let db
+  let db;
 
   const { testUsers } = helpers.makeMealFixtures();
   const testUser = testUsers[0];
@@ -14,7 +14,7 @@ describe('User Endpoints', function () {
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DATABASE_URL,
+      connection: process.env.TEST_DB_URL,
     });
     app.set('db', db);
   });
@@ -31,7 +31,7 @@ describe('User Endpoints', function () {
         helpers.seedUsers(db, testUsers)
       );
 
-      const requiredFields = ['username', 'password', 'email']
+      const requiredFields = ['username', 'password', 'email'];
 
       requiredFields.forEach(field => {
         const registerAttemptBody = {
@@ -52,7 +52,7 @@ describe('User Endpoints', function () {
         });
       });
 
-      it(`responds 400 'Password must be longer than 8 characters' when empty password`, () => {
+      it('responds 400 "Password must be longer than 8 characters" when empty password', () => {
         const userShortPassword = {
           username: 'test username',
           password: '1234567',
@@ -64,7 +64,7 @@ describe('User Endpoints', function () {
           .expect(400, { error: 'Password must be longer than 8 characters' });
       });
 
-      it(`responds 400 'Password must be less than 72 characters' when long password`, () => {
+      it('responds 400 "Password must be less than 72 characters" when long password', () => {
         const userLongPassword = {
           username: 'test username',
           password: '*'.repeat(73),
@@ -73,10 +73,10 @@ describe('User Endpoints', function () {
         return supertest(app)
           .post('/users')
           .send(userLongPassword)
-          .expect(400, { error: `Password must be less than 72 characters` })
+          .expect(400, { error: 'Password must be less than 72 characters' });
       });
 
-      it(`responds 400 error when password starts with spaces`, () => {
+      it('responds 400 error when password starts with spaces', () => {
         const userPasswordStartsSpaces = {
           username: 'test username',
           password: ' 1Aa!2Bb@',
@@ -85,11 +85,11 @@ describe('User Endpoints', function () {
         return supertest(app)
           .post('/users')
           .send(userPasswordStartsSpaces)
-          .expect(400, { error: `Password must not start or end with empty spaces` })
+          .expect(400, { error: 'Password must not start or end with empty spaces' });
       });
 
 
-      it(`responds 400 error when password ends with spaces`, () => {
+      it('responds 400 error when password ends with spaces', () => {
         const userPasswordEndsSpaces = {
           username: 'test username',
           password: '1Aa!2Bb@ ',
@@ -98,10 +98,10 @@ describe('User Endpoints', function () {
         return supertest(app)
           .post('/users')
           .send(userPasswordEndsSpaces)
-          .expect(400, { error: `Password must not start or end with empty spaces` })
+          .expect(400, { error: 'Password must not start or end with empty spaces' });
       });
 
-      it(`responds 400 error when password isn't complex enough`, () => {
+      it('responds 400 error when password is not complex enough', () => {
         const userPasswordNotComplex = {
           username: 'test username',
           password: '11AAaabb',
@@ -110,10 +110,10 @@ describe('User Endpoints', function () {
         return supertest(app)
           .post('/users')
           .send(userPasswordNotComplex)
-          .expect(400, { error: `Password must contain one upper case, lower case, number and special character` })
+          .expect(400, { error: 'Password must contain one upper case, lower case, number and special character' });
       });
 
-      it(`responds 400 'User name already taken' when username isn't unique`, () => {
+      it('responds 400 "User name already taken" when username is not unique', () => {
         const duplicateUser = {
           username: testUser.username,
           password: '11AAaabb!!',
@@ -122,16 +122,16 @@ describe('User Endpoints', function () {
         return supertest(app)
           .post('/users')
           .send(duplicateUser)
-          .expect(400, { error: `User name already taken` });
+          .expect(400, { error: 'User name already taken' });
       });
     });
-    context(`Happy path`, () => {
-      it(`responds 201, serialzied user, storing bcryped password`, () => {
+    context('Happy path', () => {
+      it('responds 201, serialzied user, storing bcryped password', () => {
         const newUser = {
           username: 'test username',
           password: '11AAaa!!',
           email: 'test email'
-        }
+        };
         return supertest(app)
           .post('/users')
           .send(newUser)
@@ -158,9 +158,8 @@ describe('User Endpoints', function () {
               .then(compareMatch => {
                 expect(compareMatch).to.be.true;
               })
-
-          )
-      })
-    })
-  })
-})
+          );
+      });
+    });
+  });
+});

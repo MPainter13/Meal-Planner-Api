@@ -10,7 +10,7 @@ authRouter
     const loginUser = { username, password };
 
     for (const [key, value] of Object.entries(loginUser))
-      if (value == null)
+      if (!value)
         return res.status(400).json({
           error: `Missing ${key} in request body`
         });
