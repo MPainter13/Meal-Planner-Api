@@ -54,7 +54,7 @@ describe('Meal Endpoints', function () {
           testUsers
         )
       })
-      
+
       it(`should resond with 404 'meal not found'`, () => {
         return supertest(app)
           .get('/meals/4')

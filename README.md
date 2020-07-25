@@ -8,9 +8,12 @@ https://meal-planner-client.vercel.app/
 
 ## API Documentation
 This express web server handles GET, POST, DELETE and PATCH HTTP requests.
-The endpoints for GET request are "/meals/" and "/".
-The endpoint for POST request is "/".
-The endpoint for PATCH request is "/:meal_id"
+- '/users': POST: registers/logs in users.
+- '/auth': grants authorization to users so they can fetch their meals.
+- '/meals' : GET: gets a user's meals. POST: adds a new meal linked to the user via user_id.
+- /meals/:meals_id' : GET: gets a specific meal for the user. PATCH: updates a specific meal. DELETE: delete specific meal.
+There is one database that has two tables in it ('users', 'meal'). There is a one-to-many relationship between 'users' and 'meal' tables.
+
 
 ## Technologies
 Node, Express, PostgreSQL, with REST.
