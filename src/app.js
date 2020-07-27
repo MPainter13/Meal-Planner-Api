@@ -23,7 +23,11 @@ app.use('/meals', mealsRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 
-app.use(function errorHandler(error, req, res) {
+app.get('/', (req, res) => {
+  res.json({ message: 'Hello, world!' })
+});
+
+app.use(function errorHandler(error, req, res, next) {
   let response;
   if (NODE_ENV === 'production') {
     response = { error: { message: 'server error' } };
